@@ -1,6 +1,6 @@
-# HexStrike IA — Guía de Instalación
+# HexStrike IA  Guía de Instalación
 
-Interfaz de IA para reconocimiento ofensivo. Un **operador en Kali Linux** (`demo_ia.py`) manda órdenes en lenguaje natural a un **backend HexStrike AI en un LXC de Proxmox** (`hexstrike_server.py`), que ejecuta `nmap` y —en órdenes libres— consulta un modelo local de Ollama. Todo el tráfico viaja por una malla cifrada de **Tailscale**; nada expuesto a Internet.
+Interfaz de IA para reconocimiento ofensivo. Un **operador en Kali Linux** (`demo_ia.py`) manda órdenes en lenguaje natural a un **backend HexStrike AI en un LXC de Proxmox** (`hexstrike_server.py`), que ejecuta `nmap` y —en órdenes libres, consulta un modelo local de Ollama. Todo el tráfico viaja por una malla cifrada de **Tailscale**; nada expuesto a Internet.
 
 ```
 ┌─────────────────┐        Tailscale (WireGuard)        ┌──────────────────────┐
