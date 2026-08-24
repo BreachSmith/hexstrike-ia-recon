@@ -22,7 +22,7 @@ El backend es [HexStrike AI](https://github.com/0x4m4/hexstrike-ai) (0x4m4, v6.0
 | Componente | Backend (`ia-upy`) | Cliente (Kali) |
 |---|---|---|
 | SO | Ubuntu 24.04 LTS / Debian (LXC) | Kali Linux |
-| Rol | Servidor HexStrike + motor de IA | Operador / TUI |
+| Rol | Servidor HexStrike motor de IA | Operador / TUI |
 | Software | git, nmap, python3, venv, Ollama, Tailscale | python3, rich, requests, Tailscale |
 
 Necesitas `root`/`sudo` en ambas máquinas y una cuenta de Tailscale para unir los dos nodos a la misma malla.
