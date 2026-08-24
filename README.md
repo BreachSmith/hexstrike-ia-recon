@@ -1,6 +1,6 @@
-# HexStrike IA  Guía de Instalación
+# HexStrike IA — Guía de Instalación
 
-Interfaz de IA para reconocimiento ofensivo. Un **operador en Kali Linux** (`demo_ia.py`) manda órdenes en lenguaje natural a un **backend HexStrike AI en un LXC de Proxmox** (`hexstrike_server.py`), que ejecuta `nmap` y —en órdenes libres, consulta un modelo local de Ollama. Todo el tráfico viaja por una malla cifrada de **Tailscale**; nada expuesto a Internet.
+Interfaz de IA para reconocimiento ofensivo. Un **operador en Kali Linux** (`demo_ia.py`) manda órdenes en lenguaje natural a un **backend HexStrike AI en un LXC de Proxmox** (`hexstrike_server.py`), que ejecuta `nmap` y —en órdenes libres— consulta un modelo local de Ollama. Todo el tráfico viaja por una malla cifrada de **Tailscale**; nada expuesto a Internet.
 
 ```
 ┌─────────────────┐        Tailscale (WireGuard)        ┌──────────────────────┐
@@ -22,7 +22,7 @@ El backend es [HexStrike AI](https://github.com/0x4m4/hexstrike-ai) (0x4m4, v6.0
 | Componente | Backend (`ia-upy`) | Cliente (Kali) |
 |---|---|---|
 | SO | Ubuntu 24.04 LTS / Debian (LXC) | Kali Linux |
-| Rol | Servidor HexStrike motor de IA | Operador / TUI |
+| Rol | Servidor HexStrike + motor de IA | Operador / TUI |
 | Software | git, nmap, python3, venv, Ollama, Tailscale | python3, rich, requests, Tailscale |
 
 Necesitas `root`/`sudo` en ambas máquinas y una cuenta de Tailscale para unir los dos nodos a la misma malla.
@@ -75,16 +75,16 @@ Ollama corre la inferencia 100% local. En el LXC sin GPU trabaja en CPU (más le
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 systemctl enable --now ollama
-ollama pull llama3.5:7b
+ollama pull qwen2.5:7b
 ```
 
 ```bash
 # ✓ Verificar: el servicio activo y el modelo en la lista
 systemctl is-active ollama          # debe decir: active
-ollama list                         # debe aparecer llama3.5:7b (o el tag que uses)
+ollama list                         # debe aparecer qwen2.5:7b
 ```
 
-> **Verifica el tag del modelo.** `llama3.5:7b` es el nombre que usa este proyecto; si el `pull` marca "model not found", corre `ollama list` y ajusta el tag a uno válido (por ejemplo `llama3.1:8b`). El nombre debe coincidir **exacto** entre el `pull`, el `ollama list` y la config de HexStrike.
+> **Sobre el modelo.** Este proyecto usa `qwen2.5:7b` (Qwen 2.5, 7B parámetros) por su buen desempeño siguiendo instrucciones y generando comandos, con un tamaño que corre en CPU. Si prefieres otro modelo, ajusta el tag en el `pull` y confirma con `ollama list` que coincide **exacto** con el que espera HexStrike.
 
 ### 4. Clonar HexStrike AI e instalar sus dependencias
 
@@ -189,7 +189,7 @@ Audita el objetivo 100.90.158.75 en busca de vulnerabilidades comunes en los ser
 
 Esa última frase larga cae en la ruta web porque contiene `audita`, `vulnerabilidades` y `web`; el parser la reconoce y ejecuta el escaneo NSE de servicios web sin invocar al modelo.
 
-Para **invocar a Ollama (Llama 3.5)** se usa una orden libre, sin esas palabras clave de escaneo. Por ejemplo:
+Para **invocar a Ollama (Qwen 2.5)** se usa una orden libre, sin esas palabras clave de escaneo. Por ejemplo:
 
 ```
 Analiza qué riesgos tendría esta máquina si estuviera expuesta a Internet
@@ -335,7 +335,7 @@ En CPU la primera inferencia es lenta mientras carga el modelo en RAM. Confirma 
 `demo_ia.py` decide la ruta **antes** de llamar a la IA:
 
 - Si la orden trae palabras clave de escaneo (`escanea`, `nmap`, `puertos`, `versiones`, `vuln`, `web`…), el propio cliente arma el comando `nmap -sT ...` y lo manda al endpoint `/api/process/execute-async`. **No pasa por Ollama.**
-- Solo si la orden es lenguaje libre sin esas palabras, el cliente delega en el workflow de IA (`t_00--ai_reconnaissance_workflow`), y ahí sí entra Llama 3.5 vía Ollama.
+- Solo si la orden es lenguaje libre sin esas palabras, el cliente delega en el workflow de IA (`t_00--ai_reconnaissance_workflow`), y ahí sí entra Qwen 2.5 vía Ollama.
 
 Para dirigir la orden al modelo, usa una descripción en lenguaje libre sin las palabras clave de escaneo.
 
