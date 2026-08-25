@@ -351,7 +351,7 @@ Todo el tráfico entre cliente y backend va cifrado punto a punto por Tailscale 
 
 ## EJEMPLO
 Preguntas en Lenguaje Natural (Consulta al modelo Qwen 2.5 7B)
-¿Qué vectores de ataque puedo auditar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local?
+```bash ¿Qué vectores de ataque puedo auditar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local?```
 (Demuestra capacidad analítica al interpretar los servicios reales de tu servidor sin lanzar tráfico ofensivo).
 
 ---
