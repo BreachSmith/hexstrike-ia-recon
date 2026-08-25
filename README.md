@@ -351,24 +351,28 @@ Todo el tráfico entre cliente y backend va cifrado punto a punto por Tailscale 
 
 ## EJEMPLO
 Preguntas en Lenguaje Natural (Consulta al modelo Qwen 2.5 7B)
-```bash ¿Qué vectores de ataque puedo auditar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local?```
+```bash 
+¿Qué vectores de ataque puedo auditar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local? ```
 (Demuestra capacidad analítica al interpretar los servicios reales de tu servidor sin lanzar tráfico ofensivo).
 
 ---
 
-```bash¿Por qué es un riesgo dejar expuesto el puerto 8888 de una API de orquestación en la red corporativa y cómo mitigarlo?```
+```bash
+¿Por qué es un riesgo dejar expuesto el puerto 8888 de una API de orquestación en la red corporativa y cómo mitigarlo? ```
 (Resalta el contexto de ciberseguridad avanzada y buenas prácticas del modelo local).
 
 ---
 
 Comandos de Ejecución HexStrike (Escaneo en Tiempo Real con Nmap)
 
-```bashescanea 100.90.158.75```
+```bashe
+scanea 100.90.158.75 ```
 (Ejecuta Nmap asíncronamente en el nodo de Proxmox y dibuja en segundos la tabla estilizada en rojo con los 3 puertos descubiertos: 22, 8080 y 8888).
 
 ---
 
-```bashhaz un escaneo profundo de versiones en 100.90.158.75```
+```bash
+haz un escaneo profundo de versiones en 100.90.158.75 ```
 (Invoca la detección de banners -sV, demostrando que la TUI procesa resultados técnicos reales sobre Tailscale en vivo).
 
 *Angel Arturo Pech Che*
