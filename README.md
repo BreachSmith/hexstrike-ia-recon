@@ -29,7 +29,7 @@ Necesitas `root`/`sudo` en ambas máquinas y una cuenta de Tailscale para unir l
 
 ---
 
-## Parte A — Backend (`ia-upy`, LXC en Proxmox)
+## A  Backend (`ia-upy`, LXC en Proxmox)
 
 ### 1. Actualizar el sistema e instalar dependencias base
 
@@ -132,7 +132,7 @@ curl http://localhost:8888/health   # Flask debe devolver un JSON de estado
 
 ---
 
-## Parte B — Cliente (Kali Linux)
+## B Cliente (Kali Linux)
 
 ### 1. Instalar y conectar Tailscale
 
