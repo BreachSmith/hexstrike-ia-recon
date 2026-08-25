@@ -390,8 +390,9 @@ A continuación se muestran ejemplos reales del flujo de trabajo de **HexStrike 
 El motor procesa consultas de ciberseguridad en lenguaje natural sin lanzar paquetes a la red:
 
 **Ejemplo A: Análisis de Vectores de Ataque**
-```text
+```bash
 HexStrike-Operator: ¿Qué vectores de ataque puedo auditar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local?
+```
 ---
 
 ## Ejemplos de Uso (Live Demo)
@@ -407,8 +408,12 @@ El motor procesa consultas de ciberseguridad en lenguaje natural sin lanzar paqu
 ---
 
 **Ejemplo A: Análisis de Vectores de Ataque**
-```text
+```bash
 HexStrike-Operator: ¿Qué vectores de ataque puedo auditar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local?
+```
 
+```bash
 HexStrike-Operator: audita vulnerabilidades web en 100.90.158.75
+```
+
 ---
