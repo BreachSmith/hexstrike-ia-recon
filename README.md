@@ -284,7 +284,7 @@ sudo systemctl restart tailscaled && sudo tailscale up
 
 ---
 
-## Verificación final: ¿los datos son REALES o el fallback?
+## Verificación final ¿los datos son REALES o el fallback?
 
 El cliente tiene un respaldo: **si el backend devuelve salida vacía, la TUI rellena la tabla con puertos hardcodeados** (`22 ssh`, `80 http`, `8888 http`). Para confirmar que lo que ves es real, consulta la API **por fuera de la TUI**, donde el relleno no aparece.
 
