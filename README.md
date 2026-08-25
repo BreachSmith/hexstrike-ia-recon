@@ -409,7 +409,7 @@ El motor procesa consultas de ciberseguridad en lenguaje natural sin lanzar paqu
 
 **Ejemplo A: Análisis de Vectores de Ataque**
 ```bash
-HexStrike-Operator: ¿Qué vectores de ataque puedo auditar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local?
+¿Qué vectores de ataque puedo analizar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local?
 ```
 
 ```bash
