@@ -356,19 +356,19 @@ Preguntas en Lenguaje Natural (Consulta al modelo Qwen 2.5 7B)
 
 ---
 
-¿Por qué es un riesgo dejar expuesto el puerto 8888 de una API de orquestación en la red corporativa y cómo mitigarlo?
+```bash¿Por qué es un riesgo dejar expuesto el puerto 8888 de una API de orquestación en la red corporativa y cómo mitigarlo?```
 (Resalta el contexto de ciberseguridad avanzada y buenas prácticas del modelo local).
 
 ---
 
 Comandos de Ejecución HexStrike (Escaneo en Tiempo Real con Nmap)
 
-escanea 100.90.158.75
+```bashescanea 100.90.158.75```
 (Ejecuta Nmap asíncronamente en el nodo de Proxmox y dibuja en segundos la tabla estilizada en rojo con los 3 puertos descubiertos: 22, 8080 y 8888).
 
 ---
 
-haz un escaneo profundo de versiones en 100.90.158.75
+```bashhaz un escaneo profundo de versiones en 100.90.158.75```
 (Invoca la detección de banners -sV, demostrando que la TUI procesa resultados técnicos reales sobre Tailscale en vivo).
 
 *Angel Arturo Pech Che*
