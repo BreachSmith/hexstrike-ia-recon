@@ -343,7 +343,7 @@ Para dirigir la orden al modelo, usa una descripción en lenguaje libre sin las 
 
 ## Nota de OpSec
 
-Todo el tráfico entre cliente y backend va cifrado punto a punto por Tailscale (WireGuard). El backend **nunca** expone el puerto 8888 a Internet: solo es accesible dentro de la malla. No abras ese puerto en el firewall público ni le hagas port-forward — rompe todo el modelo de aislamiento.
+Todo el tráfico entre cliente y backend va cifrado punto a punto por Tailscale (WireGuard). El backend **nunca** expone el puerto 8888 a Internet: solo es accesible dentro de la malla. No abras ese puerto en el firewall público ni le hagas port-forward  rompe todo el modelo de aislamiento.
 
 ---
 
