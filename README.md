@@ -393,7 +393,22 @@ El motor procesa consultas de ciberseguridad en lenguaje natural sin lanzar paqu
 ```text
 HexStrike-Operator: ¿Qué vectores de ataque puedo auditar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local?
 ---
+
+## Ejemplos de Uso (Live Demo)
+
+A continuación se muestran ejemplos reales del flujo de trabajo de **HexStrike AI**, combinando la capacidad analítica de LLMs locales con la ejecución de comandos ofensivos en la red.
+
+---
+
+### 1. Consultas Teóricas y de Red Teaming (Ollama / Qwen 2.5 7B)
+
+El motor procesa consultas de ciberseguridad en lenguaje natural sin lanzar paquetes a la red:
+
+**Ejemplo A: Análisis de Vectores de Ataque**
 ```text
-HexStrike-Operator: ¿Por qué es un riesgo dejar expuesto el puerto 8888 de una API de orquestación en la red corporativa y cómo mitigarlo?
+HexStrike-Operator: ¿Qué vectores de ataque puedo auditar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local?
+
+HexStrike-Operator: audita vulnerabilidades web en 100.90.158.75
+
 ---
 
