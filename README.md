@@ -392,7 +392,7 @@ El motor procesa consultas de ciberseguridad en lenguaje natural sin lanzar paqu
 **Ejemplo A: Análisis de Vectores de Ataque**
 ```text
 HexStrike-Operator: ¿Qué vectores de ataque puedo auditar si detecto OpenSSH 9.6p1 y Python SimpleHTTP Server 0.6 activos en la red local?
-
+```text
 HexStrike-Operator: ¿Por qué es un riesgo dejar expuesto el puerto 8888 de una API de orquestación en la red corporativa y cómo mitigarlo?
 ---
 
