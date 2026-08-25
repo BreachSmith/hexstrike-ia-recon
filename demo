@@ -1,0 +1,172 @@
+#!/usr/bin/env python3
+"""
+HexStrike AI - Interactive Offensive TUI
+Integración de Ollama (Qwen 2.5 7B) y escaneo de red con Nmap vía API REST.
+"""
+
+import sys
+import time
+import requests
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+from rich.live import Live
+from rich.spinner import Spinner
+from rich.prompt import Prompt
+from rich.markdown import Markdown
+
+# Configuraciones por defecto del entorno
+console = Console()
+HEXSTRIKE_URL = "http://100.90.158.75:8888"
+OLLAMA_URL = "http://100.90.158.75:11434"
+
+def extraer_stdout_limpio(raw_data):
+    """ Extrae la salida de texto pura descartando la envoltura JSON del backend. """
+    if isinstance(raw_data, str):
+        return raw_data
+    if isinstance(raw_data, dict):
+        if "stdout" in raw_data and raw_data["stdout"]:
+            return raw_data["stdout"]
+        if "result" in raw_data:
+            return extraer_stdout_limpio(raw_data["result"])
+        if "output" in raw_data and raw_data["output"]:
+            return raw_data["output"]
+    return str(raw_data)
+
+def formatear_puertos(stdout_raw):
+    """ Parsea la salida de Nmap y genera una tabla TUI estilizada si hay puertos abiertos. """
+    table = Table(
+        title="[bold red]🎯 SERVICIOS DETECTADOS (HEXSTRIKE AI)[/bold red]",
+        border_style="red",
+        header_style="bold yellow"
+    )
+    table.add_column("Puerto", style="cyan", justify="center")
+    table.add_column("Estado", style="green", justify="center")
+    table.add_column("Servicio / Versión", style="white")
+
+    lineas = stdout_raw.split("\n")
+    encontrados = False
+    for linea in lineas:
+        if "/tcp" in linea or "/udp" in linea:
+            partes = [p for p in linea.split(" ") if p]
+            if len(partes) >= 3:
+                table.add_row(partes[0], partes[1].upper(), " ".join(partes[2:]))
+                encontrados = True
+
+    return table if encontrados else None
+
+def consultar_ollama_directo(prompt):
+    """ Consulta el modelo local Qwen 2.5 7B en Ollama para consultas teóricas o de Pentesting. """
+    payload = {
+        "model": "qwen2.5:7b",
+        "prompt": prompt,
+        "stream": False
+    }
+    try:
+        r = requests.post(f"{OLLAMA_URL}/api/generate", json=payload, timeout=60)
+        if r.status_code == 200:
+            return r.json().get("response", "")
+    except Exception as e:
+        console.print(f"[bold red]❌ Error de conexión con Ollama:[/bold red] {e}")
+    return None
+
+def enviar_a_hexstrike(instruccion):
+    """ Clasifica la intención del operador: ejecución de Nmap o chat con el LLM. """
+    text = instruccion.lower()
+    words = instruccion.split()
+    target = "100.90.158.75"
+    for w in words:
+        if w.count(".") == 3 or "100." in w:
+            target = w
+
+    if any(k in text for k in ["escanea", "audita", "escaneo", "scan"]):
+        if any(k in text for k in ["profundo", "version", "versiones", "os"]):
+            cmd = f"nmap -sT -sV -Pn --top-ports 20 {target}"
+        elif any(k in text for k in ["vulnerabilidad", "vuln", "web", "script"]):
+            cmd = f"nmap -sT -p 80,443,8888 --script=http-title {target}"
+        else:
+            cmd = f"nmap -sT -F {target}"
+
+        payload = {"command": cmd, "args": []}
+        try:
+            r = requests.post(f"{HEXSTRIKE_URL}/api/process/execute-async", json=payload, timeout=10)
+            return ("hexstrike", r.json().get("task_id"))
+        except Exception as e:
+            console.print(f"[bold red]❌ Error de conexión al API HexStrike:[/bold red] {e}")
+            return (None, None)
+    else:
+        return ("ollama", instruccion)
+
+def esperar_resultado_hexstrike(task_id):
+    """ Realiza polling asíncrono al backend hasta completar la tarea de auditoría. """
+    with Live(
+        Spinner("dots", text="[bold magenta]🤖 Ejecutando herramienta en nodo Proxmox...[/bold magenta]"),
+        refresh_per_second=12
+    ):
+        while True:
+            try:
+                r = requests.get(f"{HEXSTRIKE_URL}/api/process/get-task-result/{task_id}", timeout=5)
+                data = r.json()
+                status = data.get("result", {}).get("status") if isinstance(data.get("result"), dict) else data.get("status")
+                if status == "completed":
+                    return extraer_stdout_limpio(data.get("result", data))
+            except Exception:
+                pass
+            time.sleep(1.2)
+
+def iniciar_chat_ia():
+    """ Bucle principal de la interfaz interactiva. """
+    console.clear()
+    console.print(Panel.fit(
+        "[bold cyan]⚡ HEXSTRIKE AI - INTERACTIVE OFFENSIVE CHAT ⚡[/bold cyan]\n"
+        "[dim]Engine: Ollama (Qwen 2.5 7B) | Target Node: 100.90.158.75[/dim]",
+        style="bold blue", border_style="cyan"
+    ))
+
+    while True:
+        try:
+            prompt_usuario = Prompt.ask("\n[bold yellow]🔴 HexStrike-Operator[/bold yellow]")
+            if prompt_usuario.lower() in ["salir", "exit", "quit"]:
+                break
+
+            if not prompt_usuario.strip():
+                continue
+
+            tipo, data_or_id = enviar_a_hexstrike(prompt_usuario)
+
+            if tipo == "ollama":
+                with Live(
+                    Spinner("dots", text="[bold magenta]🤖 Agente Qwen 2.5 7B pensando...[/bold magenta]"),
+                    refresh_per_second=12
+                ):
+                    respuesta = consultar_ollama_directo(prompt_usuario)
+                
+                if respuesta:
+                    console.print(Panel(
+                        Markdown(respuesta),
+                        title="[bold green]💡 RESPUESTA DE LA IA (Qwen 2.5 7B)[/bold green]",
+                        border_style="green"
+                    ))
+                else:
+                    console.print("[bold red]❌ No se obtuvo respuesta de Ollama.[/bold red]")
+
+            elif tipo == "hexstrike":
+                stdout_raw = esperar_resultado_hexstrike(data_or_id)
+                tabla = formatear_puertos(stdout_raw)
+                if tabla:
+                    console.print(tabla)
+                    respuesta_text = f"**Salida de Nmap:**\n\n```text\n{stdout_raw}\n```"
+                else:
+                    respuesta_text = stdout_raw
+
+                console.print(Panel(
+                    Markdown(respuesta_text),
+                    title="[bold green]💡 RESPUESTA DEL ESCANEO (Nmap)[/bold green]",
+                    border_style="green"
+                ))
+
+        except KeyboardInterrupt:
+            break
+
+if __name__ == "__main__":
+    iniciar_chat_ia()
